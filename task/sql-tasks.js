@@ -132,9 +132,9 @@ async function task_1_6(db) {
             CompanyName AS 'SupplierCompanyName'
         FROM Products
         INNER JOIN Categories 
-            ON products.CategoryID = categories.CategoryID
+            ON Products.CategoryID = Categories.CategoryID
         INNER JOIN Suppliers 
-            ON products.SupplierID = suppliers.SupplierID
+            ON Products.SupplierID = Suppliers.SupplierID
         ORDER BY ProductName, 'SupplierCompanyName'
     `);
     return result[0];
@@ -371,7 +371,7 @@ async function task_1_17(db) {
                 prod.UnitPrice AS AvgPrice
             FROM Categories
             INNER JOIN Products prod
-                ON categories.CategoryID = prod.CategoryID
+                ON Categories.CategoryID = prod.CategoryID
         ) cat
         GROUP BY cat.CategoryName
         ORDER BY AvgPrice DESC, CategoryName
@@ -415,9 +415,9 @@ async function task_1_19(db) {
         SUM(orddet.UnitPrice*orddet.Quantity) AS 'TotalOrdersAmount, $'
     FROM Customers cust
     INNER JOIN Orders
-            ON cust.CustomerID = orders.CustomerID
+            ON cust.CustomerID = Orders.CustomerID
     INNER JOIN OrderDetails orddet
-            ON orders.OrderID = orddet.OrderID
+            ON Orders.OrderID = orddet.OrderID
     GROUP BY cust.CustomerID
     HAVING \`TotalOrdersAmount, $\` > 10000
     ORDER BY \`TotalOrdersAmount, $\` DESC, cust.CustomerID;
@@ -441,9 +441,9 @@ async function task_1_20(db) {
             SUM(orddet.UnitPrice * orddet.Quantity) AS 'Amount, $'
         FROM Employees emp
         INNER JOIN Orders
-            ON emp.EmployeeID = orders.EmployeeID
+            ON emp.EmployeeID = Orders.EmployeeID
         INNER JOIN OrderDetails orddet
-            ON orders.OrderID = orddet.OrderID
+            ON Orders.OrderID = orddet.OrderID
         GROUP BY emp.EmployeeID
         ORDER BY \`Amount, $\` DESC
         LIMIT 1
