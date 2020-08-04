@@ -67,7 +67,7 @@ async function task_1_3(db) {
         SELECT
             CustomerId, 
             CompanyName
-        FROM customers
+        FROM Customers
         WHERE Fax IS NULL AND Country = "USA"
     `);
     return result[0];
@@ -108,7 +108,7 @@ async function task_1_5(db) {
             ProductID AS ProductId, 
             ProductName,
             QuantityPerUnit
-        FROM products
+        FROM Products
         WHERE ProductName REGEXP '^[A-F]'
         ORDER BY ProductName
     `);
@@ -130,7 +130,7 @@ async function task_1_6(db) {
             ProductName, 
             CategoryName,
             CompanyName AS 'SupplierCompanyName'
-        FROM products
+        FROM Products
         INNER JOIN categories 
             ON products.CategoryID = categories.CategoryID
         INNER JOIN suppliers 
@@ -199,7 +199,7 @@ async function task_1_9(db) {
         SELECT
             CustomerID,
             ContactName
-        FROM customers
+        FROM Customers
         WHERE ContactName REGEXP '^[F][^\.]{2}[n]'
     `);
     return result[0];
@@ -237,7 +237,7 @@ async function task_1_11(db) {
         SELECT
             ProductName,
             UnitPrice
-        FROM products
+        FROM Products
         WHERE UnitPrice BETWEEN 5 AND 15
         ORDER BY UnitPrice, ProductName
     `);
@@ -326,7 +326,7 @@ async function task_1_15(db) {
             SUM(MONTH(OrderDate) = 10) AS 'October',
             SUM(MONTH(OrderDate) = 11) AS 'November',
             SUM(MONTH(OrderDate) = 12) AS 'December'
-        FROM orders
+        FROM Orders
         WHERE YEAR(OrderDate) = 1997
     `);
     return result[0];
@@ -345,7 +345,7 @@ async function task_1_16(db) {
             OrderID,
             CustomerID,
             ShipCountry
-        FROM orders
+        FROM Orders
         WHERE ShipPostalCode IS NOT NULL
     `);
     return result[0];
@@ -369,7 +369,7 @@ async function task_1_17(db) {
             SELECT
                 CategoryName,
                 prod.UnitPrice AS AvgPrice
-            FROM categories
+            FROM Categories
             INNER JOIN products prod
                 ON categories.CategoryID = prod.CategoryID
         ) cat
@@ -413,7 +413,7 @@ async function task_1_19(db) {
         cust.CustomerID,
         cust.CompanyName,
         SUM(orddet.UnitPrice*orddet.Quantity) AS 'TotalOrdersAmount, $'
-    FROM customers cust
+    FROM Customers cust
     INNER JOIN orders
             ON cust.CustomerID = orders.CustomerID
     INNER JOIN orderdetails orddet
@@ -439,7 +439,7 @@ async function task_1_20(db) {
             emp.EmployeeID,
             CONCAT(emp.FirstName, ' ', emp.LastName) AS 'Employee Full Name',
             SUM(orddet.UnitPrice * orddet.Quantity) AS 'Amount, $'
-        FROM employees emp
+        FROM Employees emp
         INNER JOIN orders
             ON emp.EmployeeID = orders.EmployeeID
         INNER JOIN orderdetails orddet
