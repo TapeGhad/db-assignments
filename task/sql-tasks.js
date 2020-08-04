@@ -255,15 +255,13 @@ async function task_1_11(db) {
  */
 async function task_1_12(db) {
     let result = await db.query(`
-        SELECT *
-        FROM (SELECT
+        SELECT * FROM
+            (SELECT
                 ProductName,
                 UnitPrice
             FROM Products
-            ORDER BY UnitPrice DESC, ProductName
-            LIMIT 20
-        ) prod
-        ORDER BY UnitPrice
+        ORDER BY UnitPrice DESC 
+        LIMIT 20) tab ORDER BY tab.UnitPrice, tab.ProductName
     `);
     return result[0];
 }
