@@ -131,9 +131,9 @@ async function task_1_6(db) {
             CategoryName,
             CompanyName AS 'SupplierCompanyName'
         FROM Products
-        INNER JOIN categories 
+        INNER JOIN Categories 
             ON products.CategoryID = categories.CategoryID
-        INNER JOIN suppliers 
+        INNER JOIN Suppliers 
             ON products.SupplierID = suppliers.SupplierID
         ORDER BY ProductName, 'SupplierCompanyName'
     `);
@@ -175,12 +175,12 @@ async function task_1_7(db) {
 async function task_1_8(db) {
     let result = await db.query(`
         SELECT
-            c.CategoryName AS 'CategoryName',
-            COUNT(p.CategoryID) AS 'TotalNumberOfProducts'
-        FROM Categories c
-        INNER JOIN Products p 
-            ON c.CategoryID = p.CategoryID
-        GROUP BY p.CategoryID
+            cust.CategoryName AS 'CategoryName',
+            COUNT(prod.CategoryID) AS 'TotalNumberOfProducts'
+        FROM Categories cust
+        INNER JOIN Products prod 
+            ON cust.CategoryID = prod.CategoryID
+        GROUP BY prod.CategoryID
         ORDER BY CategoryName;
     `);
     return result[0];
@@ -217,7 +217,7 @@ async function task_1_10(db) {
         SELECT
             ProductID,
             ProductName
-        FROM products
+        FROM Products
         WHERE Discontinued = 1
     `);
     return result[0];
@@ -370,7 +370,7 @@ async function task_1_17(db) {
                 CategoryName,
                 prod.UnitPrice AS AvgPrice
             FROM Categories
-            INNER JOIN products prod
+            INNER JOIN Products prod
                 ON categories.CategoryID = prod.CategoryID
         ) cat
         GROUP BY cat.CategoryName
@@ -414,9 +414,9 @@ async function task_1_19(db) {
         cust.CompanyName,
         SUM(orddet.UnitPrice*orddet.Quantity) AS 'TotalOrdersAmount, $'
     FROM Customers cust
-    INNER JOIN orders
+    INNER JOIN Orders
             ON cust.CustomerID = orders.CustomerID
-    INNER JOIN orderdetails orddet
+    INNER JOIN OrderDetails orddet
             ON orders.OrderID = orddet.OrderID
     GROUP BY cust.CustomerID
     HAVING \`TotalOrdersAmount, $\` > 10000
@@ -440,9 +440,9 @@ async function task_1_20(db) {
             CONCAT(emp.FirstName, ' ', emp.LastName) AS 'Employee Full Name',
             SUM(orddet.UnitPrice * orddet.Quantity) AS 'Amount, $'
         FROM Employees emp
-        INNER JOIN orders
+        INNER JOIN Orders
             ON emp.EmployeeID = orders.EmployeeID
-        INNER JOIN orderdetails orddet
+        INNER JOIN OrderDetails orddet
             ON orders.OrderID = orddet.OrderID
         GROUP BY emp.EmployeeID
         ORDER BY \`Amount, $\` DESC
