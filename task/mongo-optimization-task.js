@@ -153,7 +153,6 @@ async function task_3_1(db) {
                 },
                 {
                     "clientWinner" : false,
-                    "contacts.questions.category_id" : 147,
                     "$or" : [
                         {
                             "contacts.win_vendor.value" : {
